@@ -1,0 +1,44 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# Test outputs
+Testing/
+*.log
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+compile_commands.json
+
+# Generated files
+*.db
+*.sqlite
+*.sqlitedb
+*.epub
+*.plist
+*.zip
+
+# Temporary files
+tmp/
+temp/
+*.tmp
