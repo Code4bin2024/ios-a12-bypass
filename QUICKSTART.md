@@ -1,5 +1,4 @@
 # 🎯 Quick Start Guide
-
 ## Prerequisites
 
 Ensure you have the following installed:
