@@ -1,17 +1,22 @@
 # 🎯 Quick Start Guide
 ## Prerequisites
-
-Ensure you have the following installed:
-- **macOS** (10.15+)
-- **Homebrew** package manager
-- **Xcode Command Line Tools**
+Ensure you have one of the following environments ready:
+- **macOS** (10.15+) with **Homebrew** and **Xcode Command Line Tools**
+- **Linux** (Debian/Kali/Ubuntu family) with `apt`
 
 ## Installation
 
 ### Step 1: Install Dependencies
+#### macOS (Homebrew)
 
 ```bash
 brew install cmake pkg-config libimobiledevice libplist libzip sqlite3
+```
+#### Linux (APT)
+```bash
+sudo apt update
+sudo apt install -y cmake pkg-config ninja-build binutils \
+  libimobiledevice-dev libplist-dev libusbmuxd-dev libzip-dev libsqlite3-dev
 ```
 
 ### Step 2: Clone Repository
@@ -22,11 +27,23 @@ cd ios-a12-bypass
 ```
 
 ### Step 3: Build
+#### Preferred (Ninja)
 
 ```bash
-mkdir build && cd build
+cmake -S . -B build -G Ninja
+cmake --build build -j "$(nproc)"
+```
+If `pkg-config` cannot detect `libzip` on Linux, configure with:
+```bash
+PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig \
+cmake -S . -B build -G Ninja
+cmake --build build -j "$(nproc)"
+```
+#### Alternative (Makefiles)
+```bash
+mkdir -p build && cd build
 cmake ..
-make -j$(sysctl -n hw.ncpu)
+make -j"$(nproc)"
 ```
 
 ### Step 4: Run
@@ -34,6 +51,17 @@ make -j$(sysctl -n hw.ncpu)
 ```bash
 # Connect your A12+ device via USB, then:
 ./a12_bypass --auto
+```
+### Step 5: Verify Build
+```bash
+ctest --test-dir build --output-on-failure
+./build/a12_bypass --version
+./build/a12_bypass --help
+./build/a12_bypass --list
+```
+### Step 6: Clean Build Artifacts (Optional)
+```bash
+rm -rf build
 ```
 
 ## Common Commands
@@ -72,9 +100,11 @@ idevice_id -l
 ```bash
 # Verify dependencies
 pkg-config --cflags libimobiledevice-1.0
-
-# Reinstall if needed
+# Reinstall if needed (macOS)
 brew reinstall libimobiledevice libplist
+
+# Reinstall if needed (Linux)
+sudo apt install --reinstall libimobiledevice-dev libplist-dev libusbmuxd-dev libzip-dev
 ```
 
 ## Next Steps
