@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://github.com/alisakkaf/ios-a12-bypass"><img src="https://img.shields.io/badge/Project-iOS%20A12%20Bypass-blue?style=for-the-badge&logo=github" alt="Project"></a>
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-orange?style=for-the-badge" alt="Platform">
-  <img src="https://img.shields.io/badge/Python-3.7+-green?style=for-the-badge&logo=python" alt="Python">
+  <img src="https://img.shields.io/badge/Python-3.6+-green?style=for-the-badge&logo=python" alt="Python">
 </p>
 
 ---
@@ -20,65 +20,94 @@ This submodule automates the collection and parsing of live iOS syslog archives.
 
 ---
 
-## 🛠️ Environment Prerequisites
+## 🛠️ Environment Prerequisites & Dependencies
 
-To ensure seamless execution, the following environment dependencies and low-level system libraries (`libs`) must be configured according to your host operating system.
+To ensure seamless execution across all platforms, the following dependencies must be installed correctly.
 
-### 1. Cross-Platform Core
-* **Python 3.7+** must be configured and exposed inside your environment system variables (`PATH`).
+### 🔹 Windows Environment
+1. **Python 3.6+**: Ensure you check the box **"Add Python to PATH"** during installation.
+2. **iTunes Desktop Client**: Required for `usbmuxd` drivers (Apple Mobile Device Support). *Use the standard standalone installer, avoiding the Microsoft Store version.*
+3. **Python Libraries**:
+   ```cmd
+   python -m pip install --upgrade pip
+   python -m pip install pymobiledevice3
+   ```
 
-### 2. OS-Specific System Libraries (`libs`)
+### 🔹 macOS Environment
+macOS uses `python3` by default. You need Homebrew to install the required system libraries.
+1. **System Tools**:
+   ```bash
+   xcode-select --install
+   brew install libimobiledevice curl
+   ```
+2. **Python Libraries**:
+   ```bash
+   python3 -m pip install --upgrade pip
+   python3 -m pip install pymobiledevice3
+   ```
 
-#### 🔹 Windows Environment
-* **iTunes Desktop Client:** Essential for providing the structural `usbmuxd` (Apple Mobile Device Support) connectivity layer. *(It is highly recommended to install the standard standalone installer rather than the Microsoft Store package).*
+### 🔹 Linux Environment (Ubuntu/Debian-based)
+Native communication bindings for backend hardware routing must be installed explicitly.
+1. **System Tools**:
+   ```bash
+   sudo apt update
+   sudo apt install python3 python3-pip usbmuxd libimobiledevice-utils libimobiledevice6 curl
+   sudo systemctl restart usbmuxd
+   ```
+2. **Python Libraries**:
+   ```bash
+   python3 -m pip install --upgrade pip
+   python3 -m pip install pymobiledevice3
+   ```
 
-#### 🔹 macOS Environment
-* Native system drivers handle device virtualization natively. Ensure **Xcode Command Line Tools** are provisioned:
-  ```bash
-  xcode-select --install
-    ```bash
+*(Note: Using `python -m pip` or `python3 -m pip` prevents the `command not found` errors by ensuring the library is linked directly to your active Python environment).*
 
-🔹 Linux Environment (Ubuntu/Debian-based)
-Native communication bindings for backend hardware routing must be installed explicitly:
+---
 
-Bash
-sudo apt update
-sudo apt install usbmuxd libimobiledevice-utils libimobiledevice6
-sudo systemctl restart usbmuxd
-🚀 Installation & Setup
-Navigate directly to the working component directory and execute the package installation workflow:
+## 🚀 Installation & Usage
 
-Bash
-# Navigate to the tool directory
+1. Securely connect the iOS device to your host machine using a certified USB cable.
+2. Complete full device pairing authentication by selecting **"Trust This Computer"** on the device screen and providing the passcode.
+3. Navigate to the extraction directory and execute the script:
+
+**Windows Host (Command Prompt / PowerShell):**
+```cmd
 cd New_Extract_GUID
-
-# Install the standardized python dependency pipeline
-pip install pymobiledevice3
-💻 Technical Usage
-Securely connect the iOS device to your host machine using a certified USB cable.
-
-Complete full device pairing authentication by selecting "Trust This Computer" on the screen and providing the passcode.
-
-Initiate the extraction deployment vector:
-
-🏁 Execution Pipelines
-Windows Host (Command Prompt / PowerShell):
-
-DOS
 python extract_guid.py
-macOS / Linux Terminals:
+```
 
-Bash
+**macOS / Linux Terminals:**
+```bash
+cd New_Extract_GUID
 chmod +x extract_guid.py
-./extract_guid.py
-🔍 Execution Architecture Workflow
-Phase I (Reboot): Dispatches an encrypted remote software signal instructing the system diagnostics agent to perform a hard reboot.
+python3 extract_guid.py
+```
 
-Phase II (Polling): Evaluates connection points dynamically across the local host loop infrastructure waiting for interface restoration.
+---
 
-Phase III (Capture): Aggregates structural streaming log structures directly into an isolated runtime sandbox directory.
+## 🔗 Post-Extraction: Using the Main Tool (`a12_bypass`)
 
-Phase IV (Extraction): Applies high-speed regular expression filters to parsing indices, cleanly displaying the absolute hex sequence string mapping back to the system framework.
+Once the script successfully extracts your Shared SystemGroup GUID, you can bypass the interactive prompts and pass it directly into the primary `a12_bypass` architecture for immediate execution.
 
-📄 License
-This module is hosted as an integrated core element of the ios-a12-bypass architecture. Distributed under standard project parameters.
+### 📱 Execution Command
+
+```bash
+# Use pre-extracted GUID (Inject the output from the extraction script)
+./a12_bypass --guid <YOUR_EXTRACTED_GUID>
+
+# Example:
+./a12_bypass --guid 2A22A82B-C342-444D-972F-5270FB5080DF
+```
+
+### 🎛️ Relevant Configuration Flags
+
+| Flag | Description |
+|---|---|
+| `-g, --guid GUID` | Provide the pre-extracted SystemGroup GUID |
+| `-o, --output DIR` | Specify payload generation directory *(Optional)* |
+| `-v, --verbose` | Enable detailed diagnostic logging *(Optional)* |
+
+---
+
+## 📄 License
+This module is hosted as an integrated core element of the [ios-a12-bypass](https://github.com/alisakkaf/ios-a12-bypass) architecture. Distributed under standard project parameters.
